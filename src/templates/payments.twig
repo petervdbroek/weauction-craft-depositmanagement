@@ -1,0 +1,53 @@
+{% extends "_layouts/cp" %}
+{% set title = 'Deposit Management - Payments' %}
+
+{% block content %}
+
+    {% set filteredStatus = craft.request.getPost('status') %}
+    {% if not filteredStatus %}
+        {% set filteredStatus = 'all' %}
+    {% endif %}
+
+    <h2>{{ filteredStatus | ucfirst }} Payments</h2>
+    <form method="post" accept-charset="UTF-8" action="{{ craft.request.getUrl() }}">
+        {{ getCsrfInput() }}
+        <label>
+            Filter by status:
+            <select name="status">
+                <option value="all"{% if filteredStatus == 'all' %} selected{% endif %}>All</option>
+                {%  for status in craft.depositManagement.statusses %}
+                    <option value="{{ status }}"{% if filteredStatus == status %} selected{% endif %}>{{ status | ucfirst }}</option>
+                {%  endfor %}
+            </select>
+        </label>
+        <br /><br />
+        <input type="submit" class="btn submit" value="Filter" />
+    </form>
+    <Br /><Br />
+    <table class="shadow-box editable" style="width: 900px;">
+        <thead>
+            <tr>
+                <th class="header">User</th>
+                <th class="header">Status</th>
+                <th class="header">Date created</th>
+                <th class="header">Date last updated</th>
+                <th class="header">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in craft.depositManagement.payments(filteredStatus) %}
+                <tr>
+                    <td style="text-align: left">{{ payment.email }}</td>
+                    <td style="text-align: left">{{ payment.status }}</td>
+                    <td style="text-align: left">{{ payment.dateCreated | date('d-m-Y H:i:s') }}</td>
+                    <td style="text-align: left">{{ payment.dateUpdated | date('d-m-Y H:i:s') }}</td>
+                    <td>
+                        {% if payment.status == 'paid' %}
+                            <a href="/actions/depositManagement/payment/refund?id={{ payment.payment_id }}"><span class="btn submit">Refund</span></a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

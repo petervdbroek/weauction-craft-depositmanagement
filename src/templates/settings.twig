@@ -1,0 +1,26 @@
+{% import "_includes/forms" as forms %}
+
+{% if filesystemConfigExists %}
+    <div class="error"
+         style="padding: 1em; border: 1px solid rgb(218,90,71); background-color: rgba(218,90,71,0.1)">
+        <p>{{ "Heads up: these settings may be overridden by the contents of <code>`craft/app/config/myauction.php`</code>." | t | raw }}</p>
+    </div>
+{% endif %}
+
+{{ forms.textField({
+    label: "<strong>Deposit amount</strong>"|t,
+    id: 'deposit_amount',
+    name: 'deposit_amount',
+    placeholder : '',
+    instructions : "",
+    value: settings.deposit_amount
+}) }}
+
+{{ forms.textField({
+    label: "<strong>Deposit description</strong>"|t,
+    id: 'deposit_description',
+    name: 'deposit_description',
+    placeholder : '',
+    instructions : "",
+    value: settings.deposit_description
+}) }}

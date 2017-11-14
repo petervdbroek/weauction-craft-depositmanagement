@@ -1,0 +1,22 @@
+{% extends "_layouts/cp" %}
+{% set title = 'Deposit Management' %}
+
+{% block content %}
+    <h2>Deposit dashboard</h2>
+    <table class="shadow-box editable" style="width: 600px;">
+        <thead>
+        <tr>
+            <th class="header"># Users deposited</th>
+            <th class="header">Total amount deposited in &euro;</th>
+            <th class="header">Total amount refunded in &euro;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="text-align: left">{{ craft.depositManagement.numUsers }}</td>
+            <td style="text-align: left">&euro; {{ craft.depositManagement.totalAmount('paid') | number_format(0, '.', ',') }},-</td>
+            <td style="text-align: left">&euro; {{ craft.depositManagement.totalAmount('refunded') | number_format(0, '.', ',')  }},-</td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}
